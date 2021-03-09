@@ -1,13 +1,26 @@
-import actionTypes from './actionTypes';
+import { getTaskListApi } from "../core/api/taskApi";
+import { GET_TASK_SUCCESS, GET_TASK_FAILED } from "./constant";
 
-export function addTask(){
-    return dispatch => {
-        dispatch(getAddTaskFulfillAction())
-    }
-}
+export const getTaskSuccess = (task) => ({
+  type: GET_TASK_SUCCESS,
+  payload: {
+    task,
+  },
+});
 
-function getAddTaskFulfillAction(){
-    return {
-        type: actionTypes.getAddTaskFulfillAction
-    }
-}
+export const getTaskFailed = (error) => ({
+  type: GET_TASK_FAILED,
+  payload: {
+    error,
+  },
+});
+
+export const getTask = () => {
+  return (dispatch, getState) => {
+    getTaskListApi()
+      .then((task) => {
+        dispatch(getTaskSuccess(task));
+      })
+      .catch((error) => dispatch(getTaskFailed(error)));
+  };
+};

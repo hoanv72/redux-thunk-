@@ -1,8 +1,27 @@
-import {combineReducers} from 'redux';
-import { applicationReducers} from './applicationReducer';
+import { GET_TASK_SUCCESS, GET_TASK_FAILED } from "../actions/constant";
 
-const rootReducer = combineReducers({
-    task: applicationReducers
-})
+const initialState = {
+  loading: false,
+  error: null,
+  task: null,
+};
 
-export default rootReducer
+const rootReducer = (state = initialState, action) => {
+  switch (action.type) {
+    case GET_TASK_SUCCESS:
+      return {
+        loading: false,
+        error: null,
+        task: action.payload.task,
+      };
+    case GET_TASK_FAILED:
+      return {
+        loading: false,
+        error: action.payload.error,
+        task: null,
+      };
+    default:
+      return state;
+  }
+};
+export default rootReducer;
